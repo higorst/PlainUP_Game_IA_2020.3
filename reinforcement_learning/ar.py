@@ -71,7 +71,9 @@ class RL():
         '''
         # state = 1 # acima
         # state = 0 # abaixo
+
         state = 0 if y_plain > (y_pos_pass + 22) else 1
+
         
         n = random.randint(0, 100) / 100
         if y_plain < 0:
@@ -81,6 +83,7 @@ class RL():
         else:
             action = 0 if self.q_table[state,
                                        0] >= self.q_table[state, 1] else 1
+        print("estado:",state,"action:",action,"\t",self.q_table[state,0]," ",self.q_table[state,1])
         return tuple([action, state])
 
     def q_learning(self,
@@ -92,32 +95,76 @@ class RL():
                    x_pos_pass, y_pos_pass,
                    action, last_state
                    ):
-        # state = 1 # acima
-        # state = 0 # abaixo
-        state = 0 if y_plain > (y_pos_pass + 22) else 1
 
-        if action == state:
+
+        distancia_anterior = self.last_y_dist
+        distancia_atual = y_dist
+
+
+        state = 0 if y_plain > (y_pos_pass + 22) else 1
+        '''
+            state = 1 # acima
+            state = 0 # abaixo
+            0 - fly
+            1 - not fly
+
+            quando voa o gap é 6
+            e antes de terminar o voo se escolher n voar o gap é 3
+
+        '''
+
+        if distancia_atual - 4 < distancia_anterior:
             recompensa = True
         else:
             recompensa = False
 
         # reinforcement
-        reforco = 100 if recompensa == True else -200
+        reforco = 100 if recompensa else -200
 
         # actual value
         old = self.q_table[state, action]
 
         # future state
-        y_plain_future = y_plain - constants.GAP if action == 0 else y_plain + \
-            constants.GAME_SPEED // 3
-        state_future = 0 if y_plain_future > (y_pos_pass + 22) else 1
-        # max value of future state
-        max_s_t_2 = self.q_table[state_future, 0] if self.q_table[state_future,
-                                                                  0] >= self.q_table[state_future, 1] else self.q_table[state_future, 1]
+        state_future = 0
+        if action == 0 and state == 0:
+            if y_plain - constants.GAP < (y_pos_pass + 22):
+                state_future = 1
+            else:
+                state_future = 0
+        
+        elif action == 0 and state == 1:
+            state_future = 1
+
+        elif action == 1 and state == 0:
+            state_future = 0
+        
+        elif action == 1 and state == 1:
+            if y_plain + constants.GRAVITY >= (y_pos_pass + 22):
+                state_future = 0
+            else:
+                state_future = 1
+        # print()
+        # print(self.q_table)
+        print("\n",
+            "distancia_anterior:", distancia_anterior,"\n",
+            "distancia_atual:", distancia_atual,"\n\n",
+            "y_plain:",y_plain,"\n",
+            "y_pos_pass:", y_pos_pass,"\n",
+            "y_dist:", y_dist,"\n\n",
+            "recompensa:", recompensa,"\n",
+            "state_future:", state_future,"\n",
+        )
+        # print(self.q_table)
+        # print()
+        
+        value1 = self.q_table[state_future, 0]
+        value2 = self.q_table[state_future, 1]
+        max_s_t_2 = value1 if value1 >= value2 else value2
 
         new = old + self.alpha * (reforco + (self.gamma * max_s_t_2) - old)
-        self.q_table[state, action] += int(new)
-        self.q_table[state, action] = self.q_table[state, action] / 10
+        self.q_table[state, action] = new
+        # self.q_table[state, action] = self.q_table[state, action] / 10
 
         self.last_x_dist = x_dist
+        # self.last_y_dist = y_dist + ( 0 if action == 1 else constants.GAP)
         self.last_y_dist = y_dist

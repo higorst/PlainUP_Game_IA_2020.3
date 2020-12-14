@@ -11,13 +11,6 @@ import address
 
 from reinforcement_learning import ar as rl
 
-NUM_AGENTES = 5
-
-NUM_EPISODES = 100
-ALPHA = 0.125
-GAMMA = 0.9
-E_GREEDY = 0.15
-
 list_of_scores = []
 
 def run(
@@ -42,7 +35,8 @@ def run(
     #     init_table=init_table
     # )
     # RL.start_q_table()
-    RL.update_epsilon(0 if episode > 9 else 0.1 if episode > 4 else epsilon)
+    # RL.update_epsilon(0 if episode > 9 else 0.1 if episode > 4 else epsilon)
+    RL.update_epsilon(0 if episode == episodes - 1 else (epsilon / 2) if episode > (episodes // 2) else (epsilon / 4) if episode > (episodes // 4) else (epsilon / 6) if episode > (episodes // 6) else epsilon)
     action = 10
     state = 10
 

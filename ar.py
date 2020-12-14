@@ -16,6 +16,8 @@ from numpy import asarray
 from numpy import save
 from numpy import load
 
+import matplotlib.pyplot as plt
+
 # -----------------------------------------------------------
 # RL MODULE
 from reinforcement_learning import ar as rl
@@ -25,10 +27,10 @@ print("\n\n\tReinforcement Learning (RL)\n")
 # alpha    = float(input("[PARAM] Learning Rate:   "))
 # gamma    = float(input("[PARAM] Discount Factor: "))
 # epsilon  = float(input("[PARAM] E-greedy:        "))
-episodes   = 15
-alpha      = 0.9
+episodes   = 10
+alpha      = 0.125
 gamma      = 0.125
-epsilon    = 0.15
+epsilon    = 0.05
 # ----------------
 init_table = True
 results    = []
@@ -101,7 +103,7 @@ menu_loop = True
 # while menu_loop:
 for episode in range(episodes):
     # clock.tick(constants.FPS)
-    print("episode", episode)
+    print("episode", episode, end=" >> ")
 
     screen.fill((0, 0, 0))
     # setting the game's background image
@@ -143,6 +145,7 @@ for episode in range(episodes):
         epsilon=epsilon,
         init_table=init_table,
     )
+    print("SCORE:",score)
     # ----------------------------------
     # ----------- AR - guardar resultados
     results.append([episode, score])
@@ -159,41 +162,6 @@ for episode in range(episodes):
         file_score = open('assets/score.txt', 'w')
         file_score.write(str(score))
         file_score.close()
-
-    # # change events // user interaction
-    # for event in pygame.event.get():
-    #     # game close event
-    #     if event.type == QUIT:
-    #         menu_loop = False
-
-    #     if event.type == KEYDOWN:
-    #         if event.key == K_SPACE:
-    #             # chamada do método fly para o pássaro
-    #             score, ground_group = game.run(
-    #                 pygame=pygame, 
-    #                 clock=clock, 
-    #                 screen=screen,
-    #                 ground_group=ground_group,
-    #                 plain_group=plain_group
-    #             )
-    #             # ----------------------------------
-    #             # ----------- AR - guardar resultados
-    #             results.append([episode, score])
-    #             # ----------------------------------
-    #             # remove old plain and add a new
-    #             plain_group.remove(plain_group.sprites()[0])
-    #             plain = components.Plain()
-    #             plain_group.add(plain)
-    #             if int(SCORE) < int(score):
-    #                 SCORE = score
-    #                 score_group.empty()
-    #                 # set score
-    #                 score_group = methods.set_score(score_group, SCORE)
-    #                 file_score = open('assets/score.txt', 'w')
-    #                 file_score.write(str(score))
-    #                 file_score.close()
-    #         if event.key == K_ESCAPE:
-    #             menu_loop = False
 pygame.quit()
 
 print(results)
@@ -203,4 +171,13 @@ save(
     'reinforcement_learning/results.npy', 
     results
 )  
+
+graph_x_1 = []
+graph_y_1 = []
+for index in range(episodes):
+    graph_x_1.append(results[index][0])
+    graph_y_1.append(results[index][1])
+
+plt.plot(graph_x_1, graph_y_1, 'go-', label='Distância Alcançada ao Longo dos episódios', linewidth=1, linestyle='dashed', marker='X', markersize=10)
+plt.show()
 # input("\n[ENTER] to exit\n")
