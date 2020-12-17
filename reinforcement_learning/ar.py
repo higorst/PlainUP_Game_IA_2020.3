@@ -72,9 +72,8 @@ class RL():
         # state = 1 # acima
         # state = 0 # abaixo
 
-        state = 0 if y_plain > (y_pos_pass + 22) else 1
+        state = 0 if y_plain > (y_pos_pass + 24) else 1
 
-        
         n = random.randint(0, 100) / 100
         if y_plain < 0:
             action = 1
@@ -83,7 +82,7 @@ class RL():
         else:
             action = 0 if self.q_table[state,
                                        0] >= self.q_table[state, 1] else 1
-        print("estado:",state,"action:",action,"\t",self.q_table[state,0]," ",self.q_table[state,1])
+        # print("estado:",state,"action:",action,"\t",self.q_table[state,0]," ",self.q_table[state,1])
         return tuple([action, state])
 
     def q_learning(self,
@@ -96,12 +95,10 @@ class RL():
                    action, last_state
                    ):
 
-
         distancia_anterior = self.last_y_dist
         distancia_atual = y_dist
 
-
-        state = 0 if y_plain > (y_pos_pass + 22) else 1
+        state = 0 if y_plain > (y_pos_pass + 24) else 1
         '''
             state = 1 # acima
             state = 0 # abaixo
@@ -127,36 +124,32 @@ class RL():
         # future state
         state_future = 0
         if action == 0 and state == 0:
-            if y_plain - constants.GAP < (y_pos_pass + 22):
+            if y_plain - constants.GAP < (y_pos_pass + 24):
                 state_future = 1
             else:
                 state_future = 0
-        
+
         elif action == 0 and state == 1:
             state_future = 1
 
         elif action == 1 and state == 0:
             state_future = 0
-        
+
         elif action == 1 and state == 1:
-            if y_plain + constants.GRAVITY >= (y_pos_pass + 22):
+            if y_plain + constants.GRAVITY >= (y_pos_pass + 24):
                 state_future = 0
             else:
                 state_future = 1
-        # print()
-        # print(self.q_table)
-        print("\n",
-            "distancia_anterior:", distancia_anterior,"\n",
-            "distancia_atual:", distancia_atual,"\n\n",
-            "y_plain:",y_plain,"\n",
-            "y_pos_pass:", y_pos_pass,"\n",
-            "y_dist:", y_dist,"\n\n",
-            "recompensa:", recompensa,"\n",
-            "state_future:", state_future,"\n",
-        )
-        # print(self.q_table)
-        # print()
-        
+        # print("\n",
+        #     "distancia_anterior:", distancia_anterior,"\n",
+        #     "distancia_atual:", distancia_atual,"\n\n",
+        #     "y_plain:",y_plain,"\n",
+        #     "y_pos_pass:", y_pos_pass,"\n",
+        #     "y_dist:", y_dist,"\n\n",
+        #     "recompensa:", recompensa,"\n",
+        #     "state_future:", state_future,"\n",
+        # )
+
         value1 = self.q_table[state_future, 0]
         value2 = self.q_table[state_future, 1]
         max_s_t_2 = value1 if value1 >= value2 else value2

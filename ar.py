@@ -27,7 +27,7 @@ print("\n\n\tReinforcement Learning (RL)\n")
 # alpha    = float(input("[PARAM] Learning Rate:   "))
 # gamma    = float(input("[PARAM] Discount Factor: "))
 # epsilon  = float(input("[PARAM] E-greedy:        "))
-episodes   = 10
+episodes   = 15
 alpha      = 0.125
 gamma      = 0.125
 epsilon    = 0.05
