@@ -72,13 +72,14 @@ class RL():
         # state = 1 # acima
         # state = 0 # abaixo
 
-        state = 0 if y_plain > (y_pos_pass + 24) else 1
+        state = 0 if y_plain > (y_pos_pass + 32) else 1
 
         n = random.randint(0, 100) / 100
         if y_plain < 0:
             action = 1
         elif n < self.epsilon:
             action = random.randint(0, 1)
+            print("aleatório")
         else:
             action = 0 if self.q_table[state,
                                        0] >= self.q_table[state, 1] else 1
@@ -98,7 +99,7 @@ class RL():
         distancia_anterior = self.last_y_dist
         distancia_atual = y_dist
 
-        state = 0 if y_plain > (y_pos_pass + 24) else 1
+        state = 0 if y_plain > (y_pos_pass + 32) else 1
         '''
             state = 1 # acima
             state = 0 # abaixo
@@ -110,13 +111,13 @@ class RL():
 
         '''
 
-        if distancia_atual - 4 < distancia_anterior:
+        if distancia_atual - 6 < distancia_anterior:
             recompensa = True
         else:
             recompensa = False
 
         # reinforcement
-        reforco = 100 if recompensa else -200
+        reforco = 100 if recompensa else -100
 
         # actual value
         old = self.q_table[state, action]
@@ -124,7 +125,7 @@ class RL():
         # future state
         state_future = 0
         if action == 0 and state == 0:
-            if y_plain - constants.GAP < (y_pos_pass + 24):
+            if y_plain - constants.GAP < (y_pos_pass + 32):
                 state_future = 1
             else:
                 state_future = 0
@@ -136,7 +137,7 @@ class RL():
             state_future = 0
 
         elif action == 1 and state == 1:
-            if y_plain + constants.GRAVITY >= (y_pos_pass + 24):
+            if y_plain + constants.GRAVITY >= (y_pos_pass + 32):
                 state_future = 0
             else:
                 state_future = 1

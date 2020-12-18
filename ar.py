@@ -27,7 +27,7 @@ print("\n\n\tReinforcement Learning (RL)\n")
 # alpha    = float(input("[PARAM] Learning Rate:   "))
 # gamma    = float(input("[PARAM] Discount Factor: "))
 # epsilon  = float(input("[PARAM] E-greedy:        "))
-episodes   = 15
+episodes   = 20
 alpha      = 0.125
 gamma      = 0.125
 epsilon    = 0.05
@@ -103,7 +103,7 @@ menu_loop = True
 # while menu_loop:
 for episode in range(episodes):
     # clock.tick(constants.FPS)
-    print("episode", episode, end=" >> ")
+    print("\n\tepisode", episode + 1)
 
     screen.fill((0, 0, 0))
     # setting the game's background image
