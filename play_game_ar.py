@@ -100,7 +100,7 @@ def run(
         SCORE += methods.get_score(tree)
 
         if SCORE > 100:
-            plain.updateGAP(constants.GAP * (SCORE - 99))
+            plain.updateDescida(constants.GRAVITY * (SCORE - 99))
 
         # verificar distância do agente para a passagem
         dist_x, dist_y, tree_x, tree_y=methods.dist_agent(tree_group, agent)

@@ -23,6 +23,8 @@ class Plain(pygame.sprite.Sprite, threading.Thread):
 
         self.current_image = 0
 
+        self.descida = constants.GRAVITY
+
         # convert_alpha === interprets the image
         self.image = pygame.image.load(
             address.PLAINS[0]
@@ -39,8 +41,6 @@ class Plain(pygame.sprite.Sprite, threading.Thread):
         )
         self.dist_x = 1280 - self.rect[0] - 77
         self.dist_y = 0
-
-        self.gap = constants.GAP
 
     def explosion(self):
         self.isBroken = True
@@ -69,7 +69,7 @@ class Plain(pygame.sprite.Sprite, threading.Thread):
         else:
             self.flied -= 1
 
-        self.speed += constants.GRAVITY
+        self.speed += self.descida
 
         # update height
         self.rect[1] += self.speed // 3
@@ -79,10 +79,10 @@ class Plain(pygame.sprite.Sprite, threading.Thread):
             address.PLAINS[1]
         ).convert_alpha()
         self.flied = constants.TIME_SHOW_FIRE
-        self.speed = -self.gap
+        self.speed = -constants.GAP
 
-    def updateGAP(self, gap):
-        self.gap = gap
+    def updateDescida(self, descida):
+        self.descida = descida
 
     def get_pos(self):
         return tuple([(self.rect[0] + 73), self.rect[1] + 22])
