@@ -113,7 +113,7 @@ def dist_agent(tree, agent):
 
     dist_x = tree_x - agent_x
     dist_y = agent_y - tree_y
-    dist_y = dist_y if dist_y >= 0 else dist_y*(-1)
+    # dist_y = dist_y if dist_y >= 0 else dist_y*(-1)
 
     return tuple([dist_x, dist_y, tree_x, tree_y])
 

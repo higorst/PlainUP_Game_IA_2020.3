@@ -76,7 +76,7 @@ def run(pygame, clock, screen, ground_group, plain_group):
         # verificar distância do agente para a passagem
         dist_x, dist_y, tree_x, tree_y = methods.dist_agent(tree_group, agent)
         plain.set_distx_disty_pass(dist_x, dist_y)
-
+        print(dist_y, tree_y)
         # -----------------------------------
         # show components
         # -----------------------------------
